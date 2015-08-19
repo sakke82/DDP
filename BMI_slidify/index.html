@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Body Mass Index calculator</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Body Mass Index calculator">
+  <meta name="author" content="Sakari Hakala">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Body Mass Index calculator</h1>
+    <h2>Simple BMI calculator made with Shinyapps</h2>
+    <p>Sakari Hakala<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>About project</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>This is a presentation made with R package slidify, and is a part of Coursera course Developing Data Products. Presentation is about Shiny application which calculates Body Mass Index with given height and weight. Application is located at <a href="https://sakke82.shinyapps.io/BMI_calc">https://sakke82.shinyapps.io/BMI_calc</a>.</p>
+
+<h2>About Body Mass Index</h2>
+
+<ol>
+<li>mid 1800&#39;s Adolphe Quetelet, &quot;social physics&quot;.</li>
+<li>1972 Ancel Keys, best proxy for body fat percentage.</li>
+<li>Keys cited BMI to be appropriate for measuring population and inappropiate for individual evalution.</li>
+<li>Nevertheless widely used do to simplicity.</li>
+<li>BMI between 18.5 - 25.0 is normal, under 18.5 underweight and over 25 overweight.</li>
+</ol>
+
+<p>Go to Wikipedia page for more detailed information about BMI: <a href="https://en.wikipedia.org/wiki/Body_mass_index">https://en.wikipedia.org/wiki/Body_mass_index</a>.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>How BMI is calculated</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Body mass index is calculated by deviding weight (in kg) with square of height (in m). 
+This can be written as:</p>
+
+<p>\[BMI = \frac{weight}{(height)^2}\]</p>
+
+<p>where weight is in kilograms and height is in meters.</p>
+
+<p>For people used to pounds and inches we use formula:</p>
+
+<p>\[BMI = \frac{weight_{lb}}{(height_{in})^2} * 703\]</p>
+
+<p>where weight_lb is in pounds and height_in in inches.</p>
+
+<p>More detailed formulas in <a href="http://www.calcbmi.com/">http://www.calcbmi.com/</a>.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>About ui.R and server.R</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Application is located at <a href="http://sakke82.shinyapps.io/BMI_calc">http://sakke82.shinyapps.io/BMI_calc</a>. </p>
+
+<p>Application can handle metric and imperial units, default being metres and kilograms. If user wants to use pounds and inches he needs to select checkbox labeled: &quot;pounds and inches&quot;.</p>
+
+<p>User inputs values for height and weight fields, and when his ready, presses &quot;submit&quot;-button.</p>
+
+<p>After user presses &quot;Submit&quot;-button, values are send to server.r function which does all calculation. Depending on users choise it calculates with metric or imperial values. When calculations are done server.r function sends BMI value with original user inputs back to ui.r function.</p>
+
+<p>Now ui.r will update values it got from server.r to html-page for user to see inputs and calculated BMI value.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Workhorse of server.R is function &#39;calc&#39;. It takes 3 arguments, height and weight being user inputs, and us is boolean for checkbox &quot;pounds and inches&quot;. There is calculations of same person in metric and imperial units.</p>
+
+<pre><code class="r">calc &lt;- function(height, weight, us) {
+        if (us) BMI &lt;- (weight / height^2) * 703
+        else BMI &lt;- weight / ((height/100)^2)
+        BMI
+        }
+
+cbind(&#39;metric&#39; = calc(203,113,0), &#39;imperial&#39; = calc(80,250,1))
+</code></pre>
+
+<pre><code>##        metric imperial
+## [1,] 27.42119 27.46094
+</code></pre>
+
+<p>This is basketball player Lebron James&#39;s height and weight, and hes BMI is 27.4. Everybody can figure out is he overweight as BMI says... </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='About project'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='How BMI is calculated'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='About ui.R and server.R'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Example'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
